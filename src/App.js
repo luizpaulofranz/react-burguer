@@ -1,6 +1,5 @@
 // precisamos importar React para transpilar o JSX
 import React, { Component } from 'react';
-import './App.css';
 
 // todo componente deve retornar algum HTML para ser renderizado
 class App extends Component {
@@ -8,8 +7,8 @@ class App extends Component {
   render() {
     // isso retorna JSX
     return (
-      <div className="App">
-        <h1>Hello World!</h1>
+      <div>
+        
       </div>
     );
     // codigo jsx eh transpilado para esse padrao
