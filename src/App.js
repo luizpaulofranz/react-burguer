@@ -1,6 +1,8 @@
 // precisamos importar React para transpilar o JSX
 import React, { Component } from 'react';
 import Layout from './components/Layout/Layout';
+
+import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
 // todo componente deve retornar algum HTML para ser renderizado
 class App extends Component {
   // metodo obrigatorio, que sera usado pelo React
@@ -9,12 +11,13 @@ class App extends Component {
     return (
       <div>
         <Layout>
-          <p>Test</p>
+          <BurgerBuilder/>
         </Layout>
       </div>
     );
     // codigo jsx eh transpilado para esse padrao
-    //return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Hello World!2'));
+    // por isso importar React eh necessario
+    // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Hello World!2'));
   }
 }
 
