@@ -26,7 +26,18 @@ class BurgerBuilder extends Component {
             meat: 0
         },
         // base burger price
-        totalPrice: 5
+        totalPrice: 5,
+        // to disable checkout button
+        purchasable: false
+    }
+
+    updatePurchaseState = (currentIngredients) => {
+        // Object.values returns an array with values of object properties, similiar with keys()
+        // here we sum the values of all our ingredients
+        const sum = Object.values(currentIngredients).reduce((sum, el) => {
+            return sum + el;
+        },0);
+        this.setState({purchasable: sum > 0});
     }
 
     addIngredientHandler = (type) =>{
@@ -42,6 +53,8 @@ class BurgerBuilder extends Component {
         const updatedPrice = oldPrice + ingredientPrice;
         // then finally set the state to our handled state
         this.setState({totalPrice: updatedPrice, ingredients: updatedIngredients});
+        // we must pass the ingredients like this, becouse setState is assyncronous operation
+        this.updatePurchaseState(updatedIngredients);
     }
 
     removeIngredientHandler = (type) =>{
@@ -57,6 +70,7 @@ class BurgerBuilder extends Component {
         const oldPrice = this.state.totalPrice;
         const updatedPrice = oldPrice - ingredientPrice;
         this.setState({totalPrice: updatedPrice, ingredients: updatedIngredients});
+        this.updatePurchaseState(updatedIngredients);
     }
 
     // and here we pass down our state handlers as props
@@ -77,6 +91,8 @@ class BurgerBuilder extends Component {
                     ingredientAdded={this.addIngredientHandler} 
                     ingredientRemoved={this.removeIngredientHandler} 
                     disabled={disabledInfo}
+                    price={this.state.totalPrice}
+                    purchasable={this.state.purchasable}
                 />
             </Aux>
         );
