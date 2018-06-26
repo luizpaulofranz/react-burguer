@@ -85,6 +85,10 @@ class BurgerBuilder extends Component {
         this.setState({purchasing: false });
     }
 
+    purchaseProceedHandler = () => {
+        alert('Your chackout will be deveoped later.')
+    }
+
     // and here we pass down our state handlers as props
     render() {
         // copy disableinfo array
@@ -99,7 +103,11 @@ class BurgerBuilder extends Component {
         return (
             <Aux>
                 <Modal show={this.state.purchasing} modalClose={this.purchaseCancelHandler}>
-                    <OrderSummary ingredients={this.state.ingredients} />
+                    <OrderSummary ingredients={this.state.ingredients} 
+                        purchaseProceed={this.purchaseProceedHandler} 
+                        purchaseCancel={this.purchaseCancelHandler} 
+                        price={this.state.totalPrice.toFixed(2)}
+                    />
                 </Modal>
                 <Burger ingredients={this.state.ingredients}/> 
                 <BuildControls 
