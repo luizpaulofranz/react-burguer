@@ -1,6 +1,6 @@
 // precisamos importar React para transpilar o JSX
 import React, { Component } from 'react';
-import Layout from './components/Layout/Layout';
+import Layout from './hoc/Layout/Layout';
 
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
 // todo componente deve retornar algum HTML para ser renderizado

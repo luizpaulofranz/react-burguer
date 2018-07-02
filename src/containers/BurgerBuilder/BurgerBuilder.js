@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react';
 // usamos nosso wrapper para tratar elementos adjacentes
-import Aux from '../../hoc/Aux';
+import Aux from '../../hoc/Aux/Aux';
 
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
