@@ -9,6 +9,7 @@ import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/Ui/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+import axios from '../../axios-order';
 
 const INGREDIENT_PRICES = {
     salad: 0.75,
@@ -86,7 +87,24 @@ class BurgerBuilder extends Component {
     }
 
     purchaseProceedHandler = () => {
-        alert('Your chackout will be deveoped later.')
+        const order = {
+            ingredients: this.state.ingredients,
+            price: this.state.totalPrice,
+            customer: {
+                name: 'My Name',
+                address: {
+                    street: 'One Street',
+                    zipCode: '546516',
+                    country: 'Brasil'
+                },
+                email: 'dummydata@email.com',
+            },
+            deliveryMethod: 'Cheapest'
+        }
+        // .json to create the correct collection in firebase.
+        axios.post('/orders.json', order).then(
+            response => console.log(response)
+        ).catch(err => console.log(err));
     }
 
     // and here we pass down our state handlers as props
