@@ -1,8 +1,11 @@
 // precisamos importar React para transpilar o JSX
 import React, { Component } from 'react';
 import Layout from './hoc/Layout/Layout';
+import { Route, Switch } from 'react-router-dom';
 
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
+import Checkout from './containers/Checkout/Checkout'
+
 // todo componente deve retornar algum HTML para ser renderizado
 class App extends Component {
   // metodo obrigatorio, que sera usado pelo React
@@ -11,7 +14,10 @@ class App extends Component {
     return (
       <div>
         <Layout>
-          <BurgerBuilder/>
+          <Switch>
+            <Route path="/checkout" component={Checkout} />
+            <Route path="/" exact component={BurgerBuilder} />
+          </Switch>
         </Layout>
       </div>
     );
