@@ -95,35 +95,12 @@ class BurgerBuilder extends Component {
     }
 
     purchaseProceedHandler = () => {
-        // show spinner
-        /*this.setState({loading: true});
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name: 'My Name',
-                address: {
-                    street: 'One Street',
-                    zipCode: '546516',
-                    country: 'Brasil'
-                },
-                email: 'dummydata@email.com',
-            },
-            deliveryMethod: 'Cheapest'
-        }
-        // .json to create the correct collection in firebase.
-        axios.post('/orders.json', order).then(
-            // hide spinner
-            this.setState({loading: false, purchasing: false})
-        ).catch(err => {
-            console.log(err)
-            this.setState({loading: false, purchasing: false});
-        });*/
         // here we mount our GETs in URL
         const queryParams = [];
         for (let i in this.state.ingredients) {
             queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
         }
+        queryParams.push('price=' + this.state.totalPrice);
         const queryString = queryParams.join('&');
         this.props.history.push({
             pathname: '/checkout',
