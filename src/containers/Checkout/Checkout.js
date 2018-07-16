@@ -13,10 +13,33 @@ class Checkout extends Component {
         }
     }
 
+    componentDidMount() {
+        // props.location is an object passed by router
+        const query = new URLSearchParams(this.props.location.search);
+        const newIngredients = {};
+        for (let param of query.entries()) {
+            newIngredients[param[0]] = +param[1];
+        }
+        this.setState({ingredients: newIngredients});
+    }
+
+    proceedCheckoutHandler = () => {
+        // we've access to history by react-rout
+        this.props.history.replace('/checkout/contact-data');
+    }
+
+    cancelCheckoutHandler = () => {
+        this.props.history.goBack();
+    }
+
     render() {
         return (
             <div>
-                <CheckoutSummary ingredients={this.state.ingredients} />
+                <CheckoutSummary 
+                    ingredients={this.state.ingredients} 
+                    cancelCheckout={this.cancelCheckoutHandler}
+                    proceedCheckout={this.proceedCheckoutHandler}
+                />
             </div>
         );
     }

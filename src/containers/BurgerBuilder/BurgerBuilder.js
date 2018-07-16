@@ -96,7 +96,7 @@ class BurgerBuilder extends Component {
 
     purchaseProceedHandler = () => {
         // show spinner
-        this.setState({loading: true});
+        /*this.setState({loading: true});
         const order = {
             ingredients: this.state.ingredients,
             price: this.state.totalPrice,
@@ -118,6 +118,16 @@ class BurgerBuilder extends Component {
         ).catch(err => {
             console.log(err)
             this.setState({loading: false, purchasing: false});
+        });*/
+        // here we mount our GETs in URL
+        const queryParams = [];
+        for (let i in this.state.ingredients) {
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
+        }
+        const queryString = queryParams.join('&');
+        this.props.history.push({
+            pathname: '/checkout',
+            search: '?' + queryString
         });
     }
 
