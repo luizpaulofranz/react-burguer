@@ -10,11 +10,58 @@ import classes from './ContactData.css';
 
 class ContactData extends Component {
     state = {
-        name: '',
-        email: '',
-        address: {
-            street: '',
-            postalCode: ''
+        // this giant object will generate our form
+        orderForm: {
+        name: {
+            elementType: 'input',
+            elementConfig: {
+                type: 'text',
+                placeholder: 'Your Name'
+            },
+            value: ''
+        },
+        street: {
+            elementType: 'input',
+            elementConfig: {
+                type: 'text',
+                placeholder: 'Street'
+            },
+            value: ''
+        },
+        postalCode:{
+            elementType: 'input',
+            elementConfig: {
+                type: 'text',
+                placeholder: 'ZIP CODE'
+            },
+            value: ''
+        },
+        country: {
+            elementType: 'input',
+            elementConfig: {
+                type: 'text',
+                placeholder: 'Country'
+            },
+            value: ''
+        },
+        email: {
+            elementType: 'input',
+            elementConfig: {
+                type: 'email',
+                placeholder: 'Your Mail'
+            },
+            value: ''
+        },
+        deliveryMethod: {
+            elementType: 'select',
+            elementConfig: {
+                options: [
+                    {value: 'fasted', displayValue: 'Fasted'},
+                    {value: 'cheapest', displayValue: 'Cheapest'}
+                ]
+            },
+            value: ''
+        },
         },
         loading: false
     }
@@ -49,13 +96,24 @@ class ContactData extends Component {
     }
 
     render() {
+        // we mount an array with our form object
+        const formInputs = [];
+        for (let key in this.state.orderForm) {
+            formInputs.push({
+                id: key,
+                config: this.state.orderForm[key]
+            });
+        }
         let form = (
             <form>
-                <Input inputtype="input" name="name" placeholder="Name" />
-                <Input inputtype="input" name="email" placeholder="Email" />
-                <Input inputtype="input" name="street" placeholder="Street" />
-                <Input inputtype="input" name="postal" placeholder="Postal Code" />
-                <Button btnTtpe="Success" click={this.orderHandler} >ORDER</Button>
+                {formInputs.map(formElement => (
+                    <Input 
+                        key={formElement.id}
+                        elementType={formElement.config.elementType}
+                        elementConfig={formElement.config.elementConfig}
+                        value={formElement.value}/>
+                ))}
+                <Button btnType="Success" click={this.orderHandler} >ORDER</Button>
             </form>
         );
         if (this.state.loading) {
