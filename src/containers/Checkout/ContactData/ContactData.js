@@ -95,6 +95,22 @@ class ContactData extends Component {
         });
     }
 
+    inputChangeHandler = ( event, elementId ) => {
+        // console.log(event.target.value);
+        // tha's how we update state values in nested objects, the ... operator
+        // just goes one level down
+        const updatedForm = {
+            ...this.state.orderForm
+        };
+        const updatedElement = {
+            ...this.state.orderForm[elementId]
+        }
+        // here we update our 2 levels
+        updatedElement.value = event.target.value;
+        updatedForm[elementId] = updatedElement;
+        this.setState({orderForm:updatedForm});
+    }
+
     render() {
         // we mount an array with our form object
         const formInputs = [];
@@ -105,15 +121,16 @@ class ContactData extends Component {
             });
         }
         let form = (
-            <form>
+            <form onSubmit={this.orderHandler}>
                 {formInputs.map(formElement => (
                     <Input 
                         key={formElement.id}
                         elementType={formElement.config.elementType}
                         elementConfig={formElement.config.elementConfig}
-                        value={formElement.value}/>
+                        value={formElement.value}
+                        change={(event) => this.inputChangeHandler(event, formElement.id)}/>
                 ))}
-                <Button btnType="Success" click={this.orderHandler} >ORDER</Button>
+                <Button btnType="Success" >ORDER</Button>
             </form>
         );
         if (this.state.loading) {
