@@ -13,6 +13,7 @@ class Checkout extends Component {
 
     componentWillMount() {
         // props.location is an object passed by router
+        // and the search field is URL params
         const query = new URLSearchParams(this.props.location.search);
         const newIngredients = {};
         let price = 0;
@@ -42,7 +43,8 @@ class Checkout extends Component {
                     ingredients={this.state.ingredients} 
                     cancelCheckout={this.cancelCheckoutHandler}
                     proceedCheckout={this.proceedCheckoutHandler} />
-                {/* this is how we get the current path, and we add more on it*/}
+                {/* this is how we get the current path, and we add more on it,
+                to build nested Routes*/}
                 <Route 
                     path={this.props.match.path + '/contact-data'} 
                     render={(props) => (<ContactData ingredients={this.state.ingredients} price={this.state.totalPrice} {...props} />)} />

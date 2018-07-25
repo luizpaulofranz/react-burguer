@@ -70,19 +70,14 @@ class ContactData extends Component {
         event.preventDefault();
         // show spinner
         this.setState({loading: true});
+        const formData = {};
+        for (let elementId in this.state.orderForm) {
+            formData[elementId] = this.state.orderForm[elementId].value;
+        }
         const order = {
             ingredients: this.props.ingredients,
             price: this.props.price,
-            customer: {
-                name: 'My Name',
-                address: {
-                    street: 'One Street',
-                    zipCode: '546516',
-                    country: 'Brasil'
-                },
-                email: 'dummydata@email.com',
-            },
-            deliveryMethod: 'Cheapest'
+            orderData: formData
         }
         // .json to create the correct collection in firebase.
         axios.post('/orders.json', order).then(res => {
@@ -96,8 +91,8 @@ class ContactData extends Component {
     }
 
     inputChangeHandler = ( event, elementId ) => {
-        // console.log(event.target.value);
-        // tha's how we update state values in nested objects, the ... operator
+        console.log(event.target.value);
+        // that's how we update state values in nested objects, the ... operator
         // just goes one level down
         const updatedForm = {
             ...this.state.orderForm
@@ -127,7 +122,7 @@ class ContactData extends Component {
                         key={formElement.id}
                         elementType={formElement.config.elementType}
                         elementConfig={formElement.config.elementConfig}
-                        value={formElement.value}
+                        value={formElement.config.value}
                         change={(event) => this.inputChangeHandler(event, formElement.id)}/>
                 ))}
                 <Button btnType="Success" >ORDER</Button>

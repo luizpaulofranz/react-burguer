@@ -100,8 +100,10 @@ class BurgerBuilder extends Component {
         for (let i in this.state.ingredients) {
             queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
         }
+        // we pass price by URL
         queryParams.push('price=' + this.state.totalPrice);
         const queryString = queryParams.join('&');
+        // here we force the navigation to another URL WITH our query params
         this.props.history.push({
             pathname: '/checkout',
             search: '?' + queryString
@@ -124,7 +126,7 @@ class BurgerBuilder extends Component {
         // shows spinner on burgers place until the ingredients's loaded
         let burger = this.state.error ? <p>Can't load the ingredients!</p>:<Spinner />;
         // components that uses ingredients must be checked
-        if (this.state.ingredients){
+        if (this.state.ingredients) {
             burger = (
             <Aux>
                 <Burger ingredients={this.state.ingredients}/> 
