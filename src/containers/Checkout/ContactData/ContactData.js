@@ -18,7 +18,11 @@ class ContactData extends Component {
                 type: 'text',
                 placeholder: 'Your Name'
             },
-            value: ''
+            value: '',
+            validation: {
+                required: true
+            },
+            valid: false
         },
         street: {
             elementType: 'input',
@@ -26,7 +30,11 @@ class ContactData extends Component {
                 type: 'text',
                 placeholder: 'Street'
             },
-            value: ''
+            value: '',
+            validation: {
+                required: true
+            },
+            valid: false
         },
         postalCode:{
             elementType: 'input',
@@ -34,7 +42,13 @@ class ContactData extends Component {
                 type: 'text',
                 placeholder: 'ZIP CODE'
             },
-            value: ''
+            value: '',
+            validation: {
+                required: true,
+                minLength: 8,
+                maxLength: 9
+            },
+            valid: false
         },
         country: {
             elementType: 'input',
@@ -42,7 +56,11 @@ class ContactData extends Component {
                 type: 'text',
                 placeholder: 'Country'
             },
-            value: ''
+            value: '',
+            validation: {
+                required: true
+            },
+            valid: false
         },
         email: {
             elementType: 'input',
@@ -50,7 +68,11 @@ class ContactData extends Component {
                 type: 'email',
                 placeholder: 'Your Mail'
             },
-            value: ''
+            value: '',
+            validation: {
+                required: true
+            },
+            valid: false
         },
         deliveryMethod: {
             elementType: 'select',
@@ -64,6 +86,22 @@ class ContactData extends Component {
         },
         },
         loading: false
+    }
+
+    isValid(value, rules) {
+        let isValid = true;
+
+        if(rules.required) {
+            isValid = value.trim() !== '' && isValid;
+        }
+        if(rules.maxLength) {
+            isValid = value.length <= rules.maxLength && isValid;
+        }
+        if(rules.minLength) {
+            isValid = value.length >= rules.maxLength && isValid;
+        }
+
+        return isValid;
     }
 
     orderHandler = ( event ) => {
@@ -91,7 +129,6 @@ class ContactData extends Component {
     }
 
     inputChangeHandler = ( event, elementId ) => {
-        console.log(event.target.value);
         // that's how we update state values in nested objects, the ... operator
         // just goes one level down
         const updatedForm = {
@@ -102,8 +139,11 @@ class ContactData extends Component {
         }
         // here we update our 2 levels
         updatedElement.value = event.target.value;
+        // here we check validity
+        updatedElement.valid = this.isValid(updatedElement.value, updatedElement.validation);
         updatedForm[elementId] = updatedElement;
         this.setState({orderForm:updatedForm});
+        console.log(updatedElement);
     }
 
     render() {
