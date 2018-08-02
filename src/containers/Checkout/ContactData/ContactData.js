@@ -164,6 +164,17 @@ class ContactData extends Component {
         this.setState({orderForm:updatedForm, formIsValid: formIsValid});
     }
 
+    // to verify if the fields are valids
+    validate(value, rules) {
+        let isValid = false;
+
+        if (rules.required) {
+            isValid = value.trim() !== ''
+        }
+
+        return isValid;
+    }
+
     render() {
         // we mount an array with our form object
         const formInputs = [];
