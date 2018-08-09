@@ -2,6 +2,7 @@
  * do hamburguer mais varios componentes filhos*/
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 // usamos nosso wrapper para tratar elementos adjacentes
 import Aux from '../../hoc/Aux/Aux';
 
@@ -12,6 +13,7 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import axios from '../../axios-order';
 import Spinner from '../../components/Ui/Spinner/Spinner';
 import withErrorhandler from '../../hoc/withErrorHandler/withErrorHandler';
+import * as actionTypes from '../../store/actions';
 
 const INGREDIENT_PRICES = {
     salad: 0.75,
@@ -114,7 +116,7 @@ class BurgerBuilder extends Component {
     render() {
         // copy disableinfo array
         const disabledInfo = {
-            ...this.state.ingredients
+            ...this.props.ings
         }
         for (let key in disabledInfo) {
             // a simple array which contains true or false in each position
@@ -126,13 +128,13 @@ class BurgerBuilder extends Component {
         // shows spinner on burgers place until the ingredients's loaded
         let burger = this.state.error ? <p>Can't load the ingredients!</p>:<Spinner />;
         // components that uses ingredients must be checked
-        if (this.state.ingredients) {
+        if (this.props.ings) {
             burger = (
             <Aux>
-                <Burger ingredients={this.state.ingredients}/> 
+                <Burger ingredients={this.props.ings}/> 
                 <BuildControls 
-                    ingredientAdded={this.addIngredientHandler} 
-                    ingredientRemoved={this.removeIngredientHandler} 
+                    ingredientAdded={this.props.onIngredientAdded} 
+                    ingredientRemoved={this.props.onIngredientRemoved} 
                     disabled={disabledInfo}
                     price={this.state.totalPrice}
                     purchasable={this.state.purchasable}
@@ -140,7 +142,7 @@ class BurgerBuilder extends Component {
                 />
             </Aux>
             );
-            orderSummary = <OrderSummary ingredients={this.state.ingredients} 
+            orderSummary = <OrderSummary ingredients={this.props.ings} 
                 purchaseProceed={this.purchaseProceedHandler} 
                 purchaseCancel={this.purchaseCancelHandler} 
                 price={this.state.totalPrice.toFixed(2)}
@@ -162,5 +164,21 @@ class BurgerBuilder extends Component {
     }
 }
 
+const mapStateToProps = state => {
+    // ing become a prop here in this component
+    // which contains the state stored in Redux
+    return {
+        ings: state.ingredients
+    };
+}
+
+const mapDispatchToProps = dispatch => {
+    // this two became props too, with contains the methods to change global state
+    return {
+        onIngredientAdded: (ingName) => dispatch({ type: actionTypes.ADD_INGREDIENT, ingredientName: ingName }),
+        onIngredientRemoved: (ingName) => dispatch({ type: actionTypes.REMOVE_INGREDIENT, ingredientName: ingName })
+    };
+}
+
 // global error handler
-export default withErrorhandler(BurgerBuilder, axios);
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorhandler(BurgerBuilder, axios));
