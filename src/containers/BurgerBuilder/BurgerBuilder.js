@@ -20,8 +20,6 @@ class BurgerBuilder extends Component {
     state = {
         // the ingredients and its quantities
         ingredients: null,
-        // to disable checkout button
-        purchasable: false,
         // to toggle modal
         purchasing: false,
         // to show spinner
@@ -30,20 +28,23 @@ class BurgerBuilder extends Component {
     }
 
     componentDidMount () {
+        /*
         axios.get('https://study-react-burger.firebaseio.com/ingredients.json')
         .then(res => {
             this.setState({ingredients: res.data});
         })
         .catch(err => {this.setState({error:true})});
+        */
     }
 
+    // only checks if we have some ingredients
     updatePurchaseState = (currentIngredients) => {
         // Object.values returns an array with values of object properties, similiar with keys()
         // here we sum the values of all our ingredients
         const sum = Object.values(currentIngredients).reduce((sum, el) => {
             return sum + el;
         },0);
-        this.setState({purchasable: sum > 0});
+        return sum > 0;
     }
 
     purchaseHandler = () => {
@@ -95,7 +96,7 @@ class BurgerBuilder extends Component {
                     ingredientRemoved={this.props.onIngredientRemoved} 
                     disabled={disabledInfo}
                     price={this.props.totalPrice}
-                    purchasable={this.state.purchasable}
+                    purchasable={this.updatePurchaseState(this.props.ings)}
                     ordered={this.purchaseHandler}
                 />
             </Aux>
