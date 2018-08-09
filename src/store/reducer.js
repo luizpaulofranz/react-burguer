@@ -33,19 +33,25 @@ const reducer = (state = initialState, action) => {
                 },
                 totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
             };
-        case actionTypes.ADD_INGREDIENT:
-        let newPrice = state.totalPrice;
-        if (newPrice > 0) {
-            newPrice -= INGREDIENT_PRICES[action.ingredientName]
-        }
-        return {
-            ...state,
-            ingredients: {
-                ...state.ingredients,
-                [action.ingredientName]: state.ingredients[action.ingredientName] -1
-            },
-            totalPrice: newPrice
-        };
+        case actionTypes.REMOVE_INGREDIENT:
+            let newPrice = state.totalPrice;
+            if (newPrice > 0) {
+                newPrice -= INGREDIENT_PRICES[action.ingredientName]
+            }
+            return {
+                ...state,
+                ingredients: {
+                    ...state.ingredients,
+                    [action.ingredientName]: state.ingredients[action.ingredientName] -1
+                },
+                totalPrice: newPrice
+            };
+        case actionTypes.RESET_INGREDIENT:
+            const ings = {...initialState.ingredients};
+            return {
+                ...initialState,
+                ingredients: ings
+            };
         default:
             return state;
     }

@@ -56,19 +56,7 @@ class BurgerBuilder extends Component {
     }
 
     purchaseProceedHandler = () => {
-        // here we mount our GETs in URL
-        const queryParams = [];
-        for (let i in this.props.ings) {
-            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.props.ings[i]));
-        }
-        // we pass price by URL
-        queryParams.push('price=' + this.props.totalPrice);
-        const queryString = queryParams.join('&');
-        // here we force the navigation to another URL WITH our query params
-        this.props.history.push({
-            pathname: '/checkout',
-            search: '?' + queryString
-        });
+        this.props.history.push('checkout');
     }
 
     // and here we pass down our state handlers as props

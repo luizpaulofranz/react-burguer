@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData';
@@ -9,22 +10,6 @@ class Checkout extends Component {
     state = {
         ingredients: null,
         totalPrice: 0
-    }
-
-    componentWillMount() {
-        // props.location is an object passed by router
-        // and the search field is URL params
-        const query = new URLSearchParams(this.props.location.search);
-        const newIngredients = {};
-        let price = 0;
-        for (let param of query.entries()) {
-            if (param[0] === 'price') {
-                price = param[1];
-            } else {
-                newIngredients[param[0]] = +param[1];
-            }
-        }
-        this.setState({ingredients: newIngredients, totalPrice: price});
     }
 
     proceedCheckoutHandler = () => {
@@ -40,17 +25,26 @@ class Checkout extends Component {
         return (
             <div>
                 <CheckoutSummary 
-                    ingredients={this.state.ingredients} 
+                    ingredients={this.props.ings} 
                     cancelCheckout={this.cancelCheckoutHandler}
                     proceedCheckout={this.proceedCheckoutHandler} />
                 {/* this is how we get the current path, and we add more on it,
                 to build nested Routes*/}
                 <Route 
                     path={this.props.match.path + '/contact-data'} 
-                    render={(props) => (<ContactData ingredients={this.state.ingredients} price={this.state.totalPrice} {...props} />)} />
+                    component={ContactData} />
             </div>
         );
     }
 }
 
-export default Checkout;
+const mapStateToProps = state => {
+    // ing become a prop here in this component
+    // which contains the state stored in Redux
+    return {
+        ings: state.ingredients,
+        totalPrice: state.totalPrice
+    };
+}
+// we don't need the dispatcher here, there's no action
+export default connect(mapStateToProps, null)(Checkout);

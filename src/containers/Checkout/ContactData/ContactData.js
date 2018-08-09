@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actionTypes from '../../../store/actions';
 
 import Button from '../../../components/Ui/Button/Button';
 import Spinner from '../../../components/Ui/Spinner/Spinner';
@@ -125,14 +127,16 @@ class ContactData extends Component {
             formData[elementId] = this.state.orderForm[elementId].value;
         }
         const order = {
-            ingredients: this.props.ingredients,
-            price: this.props.price,
+            ingredients: this.props.ings,
+            price: this.props.totalPrice,
             orderData: formData
         }
         // .json to create the correct collection in firebase.
         axios.post('/orders.json', order).then(res => {
             // hide spinner
             this.setState({loading: false});
+            // call the reducer to clean state
+            this.props.resetIngredients();
             this.props.history.push('/');
         }).catch(err => {
             console.log(err)
@@ -212,4 +216,20 @@ class ContactData extends Component {
     }
 }
 
-export default ContactData;
+const mapStateToProps = state => {
+    // ing become a prop here in this component
+    // which contains the state stored in Redux
+    return {
+        ings: state.ingredients,
+        totalPrice: state.totalPrice
+    };
+}
+
+const mapDispatchToProps = dispatch => {
+    // this two became props too, with contains the methods to change global state
+    return {
+        resetIngredients: () => dispatch({ type: actionTypes.RESET_INGREDIENT })
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactData);
