@@ -22,7 +22,7 @@ const reducer = (state = initialState, action) => {
                     ...state.ingredients,
                     // here we override the passed ingredient
                     // these brakets mean "override this property"
-                    [action.ingredientName]: state[action.ingredientName] +1
+                    [action.ingredientName]: state.ingredients[action.ingredientName] +1
                 }
             };
         case actionTypes.ADD_INGREDIENT:
@@ -30,7 +30,7 @@ const reducer = (state = initialState, action) => {
             ...state,
             ingredients: {
                 ...state.ingredients,
-                [action.ingredientName]: state[action.ingredientName] -1
+                [action.ingredientName]: state.ingredients[action.ingredientName] -1
             }
         };
         default:
