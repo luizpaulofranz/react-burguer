@@ -1,4 +1,10 @@
-import * as actionTypes from './actions';
+/* 
+The reducers files are the responsibles for update the state.
+BUUUUT, they should do it WITHOUT ASYNC CODE, so, HERE we only 
+set the app state, nothing more, with SYN codes, the ASYNC operations, like server hitings
+must be runned by an action, and their return (SYNC data) are then passed here =/
+*/
+import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
     // the ingredients and its quantities
