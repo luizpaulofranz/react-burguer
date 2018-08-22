@@ -21,23 +21,13 @@ import * as burgerBuilderActions from '../../store/actions/index';
 class BurgerBuilder extends Component {
 
     state = {
-        // the ingredients and its quantities
-        ingredients: null,
         // to toggle modal
-        purchasing: false,
-        // to show spinner
-        loading: false,
-        error: null
+        purchasing: false
     }
 
-    componentDidMount () {
-        /*
-        axios.get('https://study-react-burger.firebaseio.com/ingredients.json')
-        .then(res => {
-            this.setState({ingredients: res.data});
-        })
-        .catch(err => {this.setState({error:true})});
-        */
+    componentDidMount() {
+        // this action is passed by reducer (redux)
+        this.props.oninitIngredients();
     }
 
     // only checks if we have some ingredients
@@ -76,11 +66,12 @@ class BurgerBuilder extends Component {
         // show or hide spinner on order summary until server responses
         let orderSummary = null;
         // shows spinner on burgers place until the ingredients's loaded
-        let burger = this.state.error ? <p>Can't load the ingredients!</p>:<Spinner />;
+        let burger = this.props.error ? <p>Can't load the ingredients!</p>:<Spinner />;
         // components that uses ingredients must be checked
         if (this.props.ings) {
             burger = (
             <Aux>
+                {/*the ingredients comes through props injected by redux*/}
                 <Burger ingredients={this.props.ings}/> 
                 <BuildControls 
                     ingredientAdded={this.props.onIngredientAdded} 
@@ -99,10 +90,6 @@ class BurgerBuilder extends Component {
             />;
         }
 
-        if (this.state.loading) {
-            orderSummary = <Spinner />
-        }
-
         return (
             <Aux>
                 <Modal show={this.state.purchasing} modalClose={this.purchaseCancelHandler}>
@@ -119,7 +106,8 @@ const mapStateToProps = state => {
     // which contains the state stored in Redux
     return {
         ings: state.ingredients,
-        totalPrice: state.totalPrice
+        totalPrice: state.totalPrice,
+        error: state.error
     };
 }
 
@@ -128,7 +116,8 @@ const mapDispatchToProps = dispatch => {
     // which execute ASYNC codes and returns an object with dispatch to the reducers
     return {
         onIngredientAdded: (ingName) => dispatch(burgerBuilderActions.addIngredient(ingName)),
-        onIngredientRemoved: (ingName) => dispatch( burgerBuilderActions.removeIngredient(ingName))
+        onIngredientRemoved: (ingName) => dispatch( burgerBuilderActions.removeIngredient(ingName)),
+        oninitIngredients: () => dispatch(burgerBuilderActions.initIngredients())
     };
 }
 
