@@ -102,7 +102,7 @@ class BurgerBuilder extends Component {
 }
 
 const mapStateToProps = state => {
-    // ing become a prop here in this component
+    // ings become a prop here in this component
     // which contains the state stored in Redux
     return {
         ings: state.ingredients,

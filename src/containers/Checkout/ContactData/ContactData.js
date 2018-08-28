@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import * as actionTypes from '../../../store/actions/actionTypes';
 
 import Button from '../../../components/Ui/Button/Button';
+import Input from '../../../components/Ui/Input/Input';
 import Spinner from '../../../components/Ui/Spinner/Spinner';
 import axios from '../../../axios-order';
-
-import Input from '../../../components/Ui/Input/Input';
+import errorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
+import * as actions from '../../../store/actions/index';
 
 import classes from './ContactData.css';
 
@@ -94,8 +95,7 @@ class ContactData extends Component {
         },
         },
         // global form validation
-        formIsValid: false,
-        loading: false
+        formIsValid: false
     }
 
     isValid(value, rules) {
@@ -120,8 +120,6 @@ class ContactData extends Component {
 
     orderHandler = ( event ) => {
         event.preventDefault();
-        // show spinner
-        this.setState({loading: true});
         const formData = {};
         for (let elementId in this.state.orderForm) {
             formData[elementId] = this.state.orderForm[elementId].value;
@@ -131,6 +129,8 @@ class ContactData extends Component {
             price: this.props.totalPrice,
             orderData: formData
         }
+
+        this.props.onOrderBurger(order);
         
     }
 
@@ -194,7 +194,7 @@ class ContactData extends Component {
                 <Button disabled={!this.state.formIsValid} btnType="Success" >ORDER</Button>
             </form>
         );
-        if (this.state.loading) {
+        if (this.props.loading) {
             form = <Spinner />;
         }
         return (
@@ -211,15 +211,15 @@ const mapStateToProps = state => {
     // which contains the state stored in Redux
     return {
         ings: state.ingredients,
-        totalPrice: state.totalPrice
+        totalPrice: state.totalPrice,
+        loading: state.loading
     };
 }
 
 const mapDispatchToProps = dispatch => {
-    // this two became props too, with contains the methods to change global state
     return {
-        resetIngredients: () => dispatch({ type: actionTypes.RESET_INGREDIENT })
+        onOrderBurger: (orderData) => dispatch({ type: actions.purchaseBurger(orderData)})
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContactData);
+export default connect(mapStateToProps, mapDispatchToProps)(errorHandler(ContactData, axios));

@@ -16,10 +16,21 @@ export const purchaseBurgerFail = ( error ) => {
     };
 };
 
-export const purchaseBurgerStart = ( orderData ) => {
+// only to show the spinner
+export const purchaseBurgerStart = ( ) => {
+    return {
+        type: actionTypes.PURCHASE_BURGER_START,
+    };
+};
+''
+// this is the one ASYNC action, is this guy who dispatch the SYNC actions above
+export const purchaseBurger = ( orderData ) => {
     return dispatch => {
+        // call the spinner
+        dispatch(purchaseBurgerStart());
         // .json to create the correct collection in firebase.
-        axios.post('/orders.json', order).then(res => {
+        axios.post('/orders.json', orderData).then(res => {
+            console.log(res.data);
             dispatch(purchaseBurgerSuccess(res.data, orderData))
         }).catch(err => {
             dispatch(purchaseBurgerFail(err))
