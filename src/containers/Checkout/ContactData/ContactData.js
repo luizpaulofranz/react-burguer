@@ -131,17 +131,7 @@ class ContactData extends Component {
             price: this.props.totalPrice,
             orderData: formData
         }
-        // .json to create the correct collection in firebase.
-        axios.post('/orders.json', order).then(res => {
-            // hide spinner
-            this.setState({loading: false});
-            // call the reducer to clean state
-            this.props.resetIngredients();
-            this.props.history.push('/');
-        }).catch(err => {
-            console.log(err)
-            this.setState({loading: false});
-        });
+        
     }
 
     inputChangeHandler = ( event, elementId ) => {

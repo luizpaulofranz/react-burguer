@@ -27,7 +27,7 @@ class BurgerBuilder extends Component {
 
     componentDidMount() {
         // this action is passed by reducer (redux)
-        this.props.oninitIngredients();
+        this.props.onInitIngredients();
     }
 
     // only checks if we have some ingredients
@@ -112,12 +112,12 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => {
-    // this two became props too, with contains the actionCreators
+    // these will became props, with contains the actionCreators
     // which execute ASYNC codes and returns an object with dispatch to the reducers
     return {
         onIngredientAdded: (ingName) => dispatch(burgerBuilderActions.addIngredient(ingName)),
         onIngredientRemoved: (ingName) => dispatch( burgerBuilderActions.removeIngredient(ingName)),
-        oninitIngredients: () => dispatch(burgerBuilderActions.initIngredients())
+        onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients())
     };
 }
 
