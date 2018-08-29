@@ -22,7 +22,7 @@ export const purchaseBurgerStart = ( ) => {
         type: actionTypes.PURCHASE_BURGER_START,
     };
 };
-''
+
 // this is the one ASYNC action, is this guy who dispatch the SYNC actions above
 export const purchaseBurger = ( orderData ) => {
     return dispatch => {
@@ -30,8 +30,8 @@ export const purchaseBurger = ( orderData ) => {
         dispatch(purchaseBurgerStart());
         // .json to create the correct collection in firebase.
         axios.post('/orders.json', orderData).then(res => {
-            console.log(res.data);
-            dispatch(purchaseBurgerSuccess(res.data, orderData))
+            //console.log('order Action: '+res);
+            dispatch(purchaseBurgerSuccess(res.data.name, orderData))
         }).catch(err => {
             dispatch(purchaseBurgerFail(err))
         });

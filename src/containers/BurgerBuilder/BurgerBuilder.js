@@ -105,9 +105,9 @@ const mapStateToProps = state => {
     // ings become a prop here in this component
     // which contains the state stored in Redux
     return {
-        ings: state.ingredients,
-        totalPrice: state.totalPrice,
-        error: state.error
+        ings: state.burgerBuilder.ingredients,
+        totalPrice: state.burgerBuilder.totalPrice,
+        error: state.burgerBuilder.error
     };
 }
 

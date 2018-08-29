@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actionTypes from '../../../store/actions/actionTypes';
 
 import Button from '../../../components/Ui/Button/Button';
 import Input from '../../../components/Ui/Input/Input';
@@ -123,15 +122,13 @@ class ContactData extends Component {
         const formData = {};
         for (let elementId in this.state.orderForm) {
             formData[elementId] = this.state.orderForm[elementId].value;
-        }
+        };
         const order = {
             ingredients: this.props.ings,
             price: this.props.totalPrice,
             orderData: formData
-        }
-
+        };
         this.props.onOrderBurger(order);
-        
     }
 
     inputChangeHandler = ( event, elementId ) => {
@@ -210,15 +207,15 @@ const mapStateToProps = state => {
     // ing become a prop here in this component
     // which contains the state stored in Redux
     return {
-        ings: state.ingredients,
-        totalPrice: state.totalPrice,
-        loading: state.loading
+        ings: state.burgerBuilder.ingredients,
+        totalPrice: state.burgerBuilder.totalPrice,
+        loading: state.order.loading
     };
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onOrderBurger: (orderData) => dispatch({ type: actions.purchaseBurger(orderData)})
+        onOrderBurger: (orderData) => dispatch(actions.purchaseBurger(orderData))
     };
 }
 

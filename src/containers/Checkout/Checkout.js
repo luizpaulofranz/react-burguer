@@ -8,8 +8,7 @@ import ContactData from './ContactData/ContactData';
 class Checkout extends Component {
 
     state = {
-        ingredients: null,
-        totalPrice: 0
+        ingredients: null
     }
 
     proceedCheckoutHandler = () => {
@@ -47,8 +46,7 @@ const mapStateToProps = state => {
     // ing become a prop here in this component
     // which contains the state stored in Redux
     return {
-        ings: state.ingredients,
-        totalPrice: state.totalPrice
+        ings: state.burgerBuilder.ingredients
     };
 }
 // we don't need the dispatcher here, there's no action
