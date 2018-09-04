@@ -16,7 +16,7 @@ import withErrorhandler from '../../hoc/withErrorHandler/withErrorHandler';
 // import just the actions for this component
 // the actions will execute ASYN codes and THEN call the reducer 
 // to finally update the state
-import * as burgerBuilderActions from '../../store/actions/index';
+import * as actions from '../../store/actions/index';
 
 class BurgerBuilder extends Component {
 
@@ -49,6 +49,7 @@ class BurgerBuilder extends Component {
     }
 
     purchaseProceedHandler = () => {
+        this.props.onInitPurchase();
         this.props.history.push('checkout');
     }
 
@@ -115,9 +116,10 @@ const mapDispatchToProps = dispatch => {
     // these will became props, with contains the actionCreators
     // which execute ASYNC codes and returns an object with dispatch to the reducers
     return {
-        onIngredientAdded: (ingName) => dispatch(burgerBuilderActions.addIngredient(ingName)),
-        onIngredientRemoved: (ingName) => dispatch( burgerBuilderActions.removeIngredient(ingName)),
-        onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients())
+        onIngredientAdded: (ingName) => dispatch(actions.addIngredient(ingName)),
+        onIngredientRemoved: (ingName) => dispatch( actions.removeIngredient(ingName)),
+        onInitIngredients: () => dispatch(actions.initIngredients()),
+        onInitPurchase: () => dispatch(actions.purchaseInit())
     };
 }
 

@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 // we need these other imports to add middlewares on our redux flow
 // compose allows us to combine multiple middlewares to pass into store
 // we must compose this becouse store receives only one object
+// the same with combineReducers
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 

@@ -7,9 +7,6 @@ import ContactData from './ContactData/ContactData';
 
 class Checkout extends Component {
 
-    state = {
-        ingredients: null
-    }
 
     proceedCheckoutHandler = () => {
         // we've access to history by react-rout
@@ -24,8 +21,11 @@ class Checkout extends Component {
         // control if the ingredients are empty, redirect to root page
         let summary = <Redirect to="/" />;
         if (this.props.ings) {
+            // to redirect if is finished
+            const purchaseFinished = this.props.purchased ? <Redirect to="/" /> : null;
             summary = (
                 <div>
+                    {purchaseFinished}
                     <CheckoutSummary 
                         ingredients={this.props.ings} 
                         cancelCheckout={this.cancelCheckoutHandler}
@@ -46,7 +46,8 @@ const mapStateToProps = state => {
     // ing become a prop here in this component
     // which contains the state stored in Redux
     return {
-        ings: state.burgerBuilder.ingredients
+        ings: state.burgerBuilder.ingredients,
+        purchased: state.order.purchased
     };
 }
 // we don't need the dispatcher here, there's no action
