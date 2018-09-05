@@ -43,3 +43,44 @@ export const purchaseInit = () => {
         type: actionTypes.PURCHASE_INIT
     };
 };
+
+export const fetchOrdersSuccess = ( orders ) => {
+    return {
+        type: actionTypes.FETCH_ORDERS_SUCCESS,
+        orders
+    };
+};
+
+export const fetchOrdersFail = ( error ) => {
+    return {
+        type: actionTypes.FETCH_ORDERS_FAIL,
+        error
+    };
+};
+
+export const fetchOrdersStart = ( ) => {
+    return {
+        type: actionTypes.FETCH_ORDERS_START,
+    };
+};
+
+export const fetchOrders = ( ) => {
+    return dispatch => {
+        dispatch(fetchOrdersStart());
+        axios.get('orders.json')
+        .then(res => {
+            const serverOrders = [];
+            for (let key in res.data) {
+                serverOrders.push({
+                    ...res.data[key],
+                    id: key
+                });
+            }
+            dispatch(fetchOrdersSuccess(serverOrders));
+            //this.setState({orders: serverOrders, loading: false});
+        }).catch(err => {
+            //this.setState({loading: false});
+            dispatch(fetchOrdersFail(err));
+        });
+    }
+};
