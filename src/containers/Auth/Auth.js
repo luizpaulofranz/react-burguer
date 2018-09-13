@@ -40,7 +40,9 @@ class Auth extends Component {
                 valid: false,
                 touched: false
             }
-        }
+        },
+        // to switch between sginup and signin
+        isSignup: true
     }
 
     isValid(value, rules) {
@@ -91,8 +93,15 @@ class Auth extends Component {
         event.preventDefault();
         this.props.onAuth(
             this.state.controls.email.value,
-            this.state.controls.password.value
+            this.state.controls.password.value,
+            this.state.isSignup
         )
+    }
+
+    swicthAuthModeHandler = () => {
+        this.setState(prevState => {
+            return {isSignup: !prevState.isSignup};
+        });
     }
 
     render() {
@@ -120,6 +129,9 @@ class Auth extends Component {
                 <form onSubmit={this.submitHandler}>
                     {form}
                     <Button btnType="Success">SUBMIT</Button>
+                    <Button btnType="Danger" click={this.swicthAuthModeHandler}>
+                        SWITCH TO {this.state.isSignup ? 'SIGNIN' : 'SIGNUP'}
+                    </Button>
                 </form>
             </div>
         );
@@ -128,7 +140,7 @@ class Auth extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth: (email, pass) => dispatch(actions.auth(email, pass))
+        onAuth: (email, pass, isSignup) => dispatch(actions.auth(email, pass, isSignup))
     };
 }
 
