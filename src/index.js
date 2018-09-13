@@ -15,10 +15,12 @@ import registerServiceWorker from './registerServiceWorker';
 // we must pass only one reducer, so we need to combine them.
 import burgerBuilderReducer from './store/reducers/burgerBuilder';
 import orderReducer from './store/reducers/orders';
+import authReducer from './store/reducers/auth';
 const rootReducer = combineReducers({
     // burguerBuilder is the slice of state which this reducer handles
     burgerBuilder: burgerBuilderReducer,
-    order: orderReducer
+    order: orderReducer,
+    auth: authReducer
 });
 
 // to debug purposes we apply this middleware
