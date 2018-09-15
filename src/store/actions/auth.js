@@ -22,6 +22,21 @@ export const authError = ( error ) => {
     }
 }
 
+export const logout = () => {
+    return {
+        type: actionTypes.AUTH_LOGOUT
+    }
+}
+
+// controls the expiration of our token
+export const checkAuthTimeout = expirationTime => {
+    return dispatch => {
+        setTimeout(() => {
+            dispatch(logout());
+        }, expirationTime * 1000) //its miliseconds
+    };
+}
+
 // executes the authentication on Firebase
 export const auth = ( email, pass, isSignup ) => {
     return dispatch => {
@@ -39,6 +54,8 @@ export const auth = ( email, pass, isSignup ) => {
         axios.post(url, authData)
         .then( res => {
             dispatch(authSuccess(res.data.idToken, res.data.localId));
+            // trates the token timeout
+            dispatch(checkAuthTimeout(res.data.expiresIn));
         })
         .catch(err => {
             console.log(err);
