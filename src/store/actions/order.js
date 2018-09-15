@@ -24,12 +24,12 @@ export const purchaseBurgerStart = ( ) => {
 };
 
 // this is the one ASYNC action, is this guy who dispatch the SYNC actions above
-export const purchaseBurger = ( orderData ) => {
+export const purchaseBurger = ( orderData, token ) => {
     return dispatch => {
         // call the spinner
         dispatch(purchaseBurgerStart());
         // .json to create the correct collection in firebase.
-        axios.post('/orders.json', orderData).then(res => {
+        axios.post('/orders.json?auth=' + token, orderData).then(res => {
             //console.log('order Action: '+res);
             dispatch(purchaseBurgerSuccess(res.data.name, orderData))
         }).catch(err => {
@@ -64,10 +64,10 @@ export const fetchOrdersStart = ( ) => {
     };
 };
 
-export const fetchOrders = ( ) => {
+export const fetchOrders = ( token ) => {
     return dispatch => {
         dispatch(fetchOrdersStart());
-        axios.get('orders.json')
+        axios.get('orders.json?auth='+token)
         .then(res => {
             const serverOrders = [];
             for (let key in res.data) {
