@@ -31,18 +31,18 @@ export const auth = ( email, pass, isSignup ) => {
             password:pass,
             returnSecureToken: true // must always be true
         }
+        // firebase URLS to authentication with login and password
         let url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyDSpelg2ucehtW_F3HvV3Yy0RV5SC7lo_I';
         if (!isSignup) {
             url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyDSpelg2ucehtW_F3HvV3Yy0RV5SC7lo_I';
         }
         axios.post(url, authData)
         .then( res => {
-            console.log(res);
             dispatch(authSuccess(res.data.idToken, res.data.localId));
         })
         .catch(err => {
             console.log(err);
-            dispatch(authError(err));
+            dispatch(authError(err.response.data.error));
         });
     }
 }
