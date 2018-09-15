@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import Aux from '../Aux/Aux';
+
+import { connect } from 'react-redux';
 // classes eh um objeto JS que contem classes CSS
 // configurados com CSS components
 import classes from './Layout.css';
@@ -26,8 +28,12 @@ class Layout extends Component {
     render () {
         return (
             <Aux>
-                <Toolbar drawerToggle={this.sideDrawerToggle} />
-                <SideDrawer show={this.state.showSideDrawer} closed={this.sideDrawerCloseHandler} />
+                <Toolbar 
+                    isAuth={this.props.isAuthenticated}
+                    drawerToggle={this.sideDrawerToggle} />
+                <SideDrawer 
+                    isAuth={this.props.isAuthenticated}
+                    show={this.state.showSideDrawer} closed={this.sideDrawerCloseHandler} />
                 <main className={classes.Content}>
                     {this.props.children}
                 </main>
@@ -36,4 +42,10 @@ class Layout extends Component {
     }
 }
 
-export default Layout;
+const mapStateToProps = state => {
+    return {
+        isAuthenticated: state.auth.token != null
+    }
+}
+
+export default connect(mapStateToProps)(Layout);
