@@ -1,7 +1,9 @@
 // precisamos importar React para transpilar o JSX
 import React, { Component } from 'react';
 import Layout from './hoc/Layout/Layout';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import * as actions from './store/actions/index';
 
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
 import Checkout from './containers/Checkout/Checkout'
@@ -11,6 +13,12 @@ import Logout from './containers/Auth/Logout/Logout';
 
 // todo componente deve retornar algum HTML para ser renderizado
 class App extends Component {
+
+  componentDidMount() {
+    // verifica se temos um token salvo localmente
+    this.props.onTryAutoLogin();
+  }
+
   // metodo obrigatorio, que sera usado pelo React
   render() {
     // isso retorna JSX
@@ -33,5 +41,13 @@ class App extends Component {
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    onTryAutoLogin: () => dispatch(actions.authLocalStorage())
+  }
+}
+
 // por fim exportamos nosso(s) componente(s)
-export default App;
+// 
+export default withRouter(connect(null, mapDispatchToProps)(App));
+

@@ -23,6 +23,10 @@ export const authError = ( error ) => {
 }
 
 export const logout = () => {
+    // clear local token
+    localStorage.removeItem('token');
+    localStorage.removeItem('expirationDate');
+    localStorage.removeItem('userId');
     return {
         type: actionTypes.AUTH_LOGOUT
     }
@@ -60,6 +64,12 @@ export const auth = ( email, pass, isSignup ) => {
         }
         axios.post(url, authData)
         .then( res => {
+            // store the token locally
+            const expirationDate = new Date(new Date().getTime() + res.data.expiresIn * 1000);
+            localStorage.setItem('token', res.data.idToken);
+            localStorage.setItem('expirationDate', expirationDate);
+            localStorage.setItem('userId', res.data.localId);
+            // dispatch to store in redux
             dispatch(authSuccess(res.data.idToken, res.data.localId));
             // trates the token timeout
             dispatch(checkAuthTimeout(res.data.expiresIn));
@@ -68,5 +78,25 @@ export const auth = ( email, pass, isSignup ) => {
             console.log(err);
             dispatch(authError(err.response.data.error));
         });
+    }
+}
+
+// this automatically logs in if localStorage has a valid token
+// dispatch it on root component (App.js)
+export const authLocalStorage = () => {
+    return dispatch => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            dispatch(logout());
+        } else {
+            const expirationDate = new Date(localStorage.getItem('expirationDate'));
+            const userId = localStorage.getItem('userId');
+            if (expirationDate <= new Date()) {
+                dispatch(logout());
+            } else {
+                dispatch(authSuccess( token, userId));
+                dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()/1000)));
+            }
+        }
     }
 }
