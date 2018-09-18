@@ -37,6 +37,13 @@ export const checkAuthTimeout = expirationTime => {
     };
 }
 
+export const setPathRedirect = (path) => {
+    return {
+        type: actionTypes.AUTH_SET_REDIRECT_PATH,
+        path
+    }
+}
+
 // executes the authentication on Firebase
 export const auth = ( email, pass, isSignup ) => {
     return dispatch => {

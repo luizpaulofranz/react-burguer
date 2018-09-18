@@ -11,7 +11,8 @@ const initialState = {
     ingredients: null,
     // base burger price 
     totalPrice: 5,
-    error: false
+    error: false,
+    building: false
 }
 
 const INGREDIENT_PRICES = {
@@ -33,7 +34,8 @@ const reducer = (state = initialState, action) => {
                     // these brakets mean "override this property"
                     [action.ingredientName]: state.ingredients[action.ingredientName] +1
                 },
-                totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
+                totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName],
+                building: true
             };
         case actionTypes.REMOVE_INGREDIENT:
             let newPrice = state.totalPrice;
@@ -46,20 +48,22 @@ const reducer = (state = initialState, action) => {
                     ...state.ingredients,
                     [action.ingredientName]: state.ingredients[action.ingredientName] -1
                 },
-                totalPrice: newPrice
+                totalPrice: newPrice,
+                building: true
             };
         case actionTypes.RESET_INGREDIENT:
             const ings = {...initialState.ingredients};
             return {
                 ...initialState,
-                ingredients: ings
+                ingredients: ings,
             };
         case actionTypes.SET_INGREDIENTS:
             return {
                 ...state,
                 ingredients: action.ingredients,
                 totalPrice: 5,
-                error: false
+                error: false,
+                building: false
             };
         case actionTypes.FETCH_INGREDIENTS_FAILD:
             return {
